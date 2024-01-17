@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+   1. SQL문장을 저장하는 공간 => SqlSessionFactory => SQL문장을 찾아준다
+      => 라이브러리는 자바소스를 변경할 수 없다 (변경,요청 => XML)
+            => Spring / Mybatis
+            => 웹 => 톰캣 (server.xml, web.xml)
+   2. mapper는 기본으로 table당 한개씩 생성
+      Config는 1개만 존재 => 공통
+      => VO 등록, mapper를 등록, 오라클 연결
+   3. mapper
+      => <select id="" resultType="" parameterType="">
+               ===== ==============
+                 |          |    
+                 |   sql문장 실행후에 받는 변수
+                 |     ~VO,String,int...
+                 | 
+               구분자 (중복을 허용하지않는다)
+ -->
+<mapper namespace="com.sist.dao.music-mapper">
+   <!-- 이부분 속성 순서 틀리면 실행이 안됨... resultType이랑 typeAlias가 일치해야함 -->
+   <select id="musicFindData" resultType="MusicVO" parameterType="hashmap">
+      SELECT no,title,singer,poster,state,album,idcrement
+      FROM GENIE_MUSIC
+      WHERE 
+     <!-- trim ~Oberrides : singer 혹은 album만 선택시 "맨 앞/뒤"에 OR를 지워줄때 사용됨 -->
+     <trim prefixOverrides="OR"> <!-- OR/AND 로 적어서 둘중하나 지우라고 선택할수도있음 -->
+      <foreach collection="fsArr" item="fs">
+      <trim prefix="OR"> <!-- 앞에 OR 첨부하기 -->
+      <!-- 결론적으로 이러면 문장 중간에만 OR가 들어가게됨 -->
+      
+       <!-- 
+         for(String fs:fsArr)
+            item      collection
+            prefixOverrides : 제거 / suffixOverrides
+            prefix : 추가 / suffix
+       -->
+      
+      <!-- 다중조건문 -->
+      <choose>
+         <!-- ""가 붙어도 비교를 하면 정수로 바뀌어서 .toString()을 붙여줘야함 -->
+         <when test="fs=='T'.toString()">
+            title LIKE '%'||#{ss}||'%'
+         </when>
+         <when test="fs=='S'.toString()" >
+            <!-- 이문장부터는 OR가 나와야함 -->
+            singer LIKE '%'||#{ss}||'%'
+         </when>
+         <when test="fs=='A'.toString()">
+            album LIKE '%'||#{ss}||'%'
+         </when>
+      </choose>
+      </trim>
+      </foreach>
+     </trim>
+   </select>
+</mapper>

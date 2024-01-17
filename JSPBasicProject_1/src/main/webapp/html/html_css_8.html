@@ -1,0 +1,85 @@
+<!--
+   <table> 태그 대체
+    ===============
+     <table> : display:table
+     <tr> : display:table-row
+    <th> : display:table-column
+    <td> : display:table-cell
+    <caption> : display:table-caption
+    => 회원가입 / 로그인 
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	#wrapper{
+		border: 5px solid #f69;
+		width: 500px;
+		margin:0 0 0 150px;
+		border-radius: 10px;
+	}
+	#joinForm{
+		display: table; /*<table>*/
+		margin:10px auto;
+		border-collapse: collapse;
+	}
+	#joinForm h1{
+		display: table-caption; /*<table><caption>*/
+		font-size: 15px;
+		padding: 5px;
+		margin: 0 0 10px 0;
+		width: 450px;
+	}
+	#joinForm h1 span{
+		text-align: center;
+		display: block;
+		color: #fff;
+		background-color: #333;
+		padding: 5px;
+	}
+	#joinForm p{
+		display: table-row;/*<table><tr>*/
+		padding : 5px;
+		border-bottom: 1px solid #6b6b6b;
+	}
+	#joinForm p label{
+		display: table-cell;/*<table><td>*/
+		padding: 0 0 0 10px;
+	}
+	#joinForm #uerid{
+		width: 100px;
+	}
+	#joinForm #uerid{
+		width: 80px;
+	}
+	#joinForm #uerid{
+		width: 100px;
+	}
+	#joinForm .cellStyle{
+		display: table-cell;
+		padding: 0 0 0 5px;
+	}
+</style>
+</head>
+<body>
+  <div id="wrapper">
+     <form id="joinForm">
+        <h1><span>회원가입</span></h1>
+        <p>
+           <label for="userid">ID</label>
+           <input type="text" name="id" id="userid" class="cellStyle">
+        </p>
+        <p>
+           <label for="userpwd">Password</label>
+           <input type="text" name="pwd" id="userpwd" class="cellStyle">
+        </p>
+        <p>
+           <label for="username">Name</label>
+           <input type="text" name="name" id="username" class="cellStyle">
+        </p>
+     </form>
+  </div>
+</body>
+</html>

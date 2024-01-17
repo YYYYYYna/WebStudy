@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+     <기존의 방법>
+     ListModel
+     InsertModel
+     InsertOkModel
+     UpdateModel
+     UpdateOkModel
+     DetailModel
+     DeleteModel
+     DeleteOkModel
+     FindModel
+     ============== 기능마다 class가 있음
+     <현재 최적화 방법> : 응집성
+     BoardModel
+     {
+         해당 메소드들을 호출하기위해
+         조건문 대신 사용할수 있는것
+         => 어노테이션 : 인덱스 번호처럼 개별 번호를 부여해 찾을때 사용됨을 수행함
+         list(){}
+         insert(){}
+         update(){}
+         ...
+         ...
+     }
+     =============== 기능별로 메소드화 시킴
+ -->
+<beans>
+   <bean id="board" class="com.sist.model.BoardModel"/>
+</beans>

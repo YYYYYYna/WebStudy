@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.dao.emp-mapper">
+<!-- 
+      [SQL문장 저장]
+      1. 데이터형을 받을 데이터형 설정 : resultType
+      2. ?에 들어갈 값을 설정 : parameterType
+      3. VO에 값을 요청시에는 column명이 다른경우에는 설정
+         vo의 변수 = column이 같은 경우
+      
+         SQL>   SELECT * FROM EMP e ;
+          EMPNO ENAME                JOB                       MGR HIREDATE
+
+          7839 KING                 PRESIDENT                     81/11/17
+          7698 BLAKE                MANAGER                  7839 81/05/01
+          7782 CLARK                MANAGER                  7839 81/05/09
+     
+          class EmpVO
+          {
+             private int empno; ==> 컬럼명=empno ==> setEmpno()
+             private String name; ==> 컬럼명=ename =/=> setEname()
+                                  ==> 컬럼명=ename as name ==> setEname()  
+          }
+      4. ?대신 사용 => index
+         //#{변수명} , ${테이블명/컬럼}
+         => ''
+         String name='홍길동'
+         WHERE name=${name}
+         => WHERE name=홍길동(X)
+         WHERE name=#{name}
+         => WHERE name='홍길동'
+         
+         //#와 $의 차이를 알고 넘어가야함
+         String table="emp"
+         FROM #{table} ==> FROM 'emp' (X)
+         FROM ${table) ==> FROM emp (O)
+             
+      5. 동적 쿼리
+         이름
+         제목
+         내용
+         
+         이름+제목
+         이름+내용
+         
+         제목+내용
+         
+         이름+제목+내용
+         =============이렇게 like 쿼리문을 7번 사용하지않고 동적쿼리 한번으로 가능함
+         
+      6. 프로시저 호출 : XML / Annotation
+         요즘의 추세는 XML+Annotation을 동시에 사용함
+         XML : <SELECT> SELECT ~ </SELECT>
+         Annotation : @SELECT("SELECT ~") : 문자열로 인식됨 
+         =================================
+         요렇게 형태가 다름
+         
+         XML의 태그
+         => 주의점:태그에 한개의 SQL문장만 지정할 수 있다
+                 여러개 있는 경우에는 서브쿼리를 이용한다
+         <select> : 데이터 검색
+         <insert> : 데이터 추가
+         <update> : 데이터 수정
+         <delete> : 데이터 삭제
+         <selectKey> : 자동증가번호(시퀀스인듯?)
+         <resultMap> : JOIN에 사용
+         <parameterMap> : 프로시저
+         
+         class EmpVO
+         {
+            private int empno;
+            private String name;
+            private DeptVO dvo=new DeptVO();
+         }
+         class DeptVO
+         {
+            private String dname;
+            private String loc;
+         }
+         
+         SELECT empno,ename,dname,loc
+         FROM emp,dept
+         WHERE emp.deptno=dept.deptno
+         
+         <resultMap type="com.sist.dao.EmpVO"> ==①
+            <result property="empno" column="empno"/> ==②
+            <result property="empno" column="ename"/> ==③
+            <result property="dvo.dname" column="danme"/> ==④
+         </resultMap>
+         
+         while(rs.next())
+         {
+            EmpVO vo=new EmpVO(); ==①
+            vo.setEmpno(rs.getInt(1)) ==②
+            //vo.setEmpno(rs.getInt("empno")) ==> 숫자가 아니라 String 이 들어가도됨
+            vo.setEname(rs.getString(2)) ==③
+            vo.getDvo().setDname(rs.getString(3)) ==④
+            vo.getDvo().setLoc(rs.getString(4)) 
+         }
+         
+         //조건문 태그종류
+         <if>
+         <foreach> : IN연산자 IN()
+         <choose> : 다중조건문
+         <where> : 조건문
+         <trim> : OR같은 특정 문자를 제거할수 있음
+ -->
+   <!-- map으로 따지면 id="empListData"가 키고 SELECT~가 값부분임 -->
+   <select id="empListData" resultType="EmpVO">
+      SELECT empno,ename,job,mgr,TO_CHAR(hiredate,'YYYY-MM-DD') as dbday,sal,comm,deptno FROM emp
+      <!-- 컬럼명이 다른게(as사용한col) 있어서 *를 주면 안됨 --> 
+      <!-- as : 1.컬럼명이 다를때 / 2. 타입형이 다를때 사용함 -->
+   </select>
+   
+   <resultMap type="com.sist.dao.EmpVO" id="empMap">
+     <result property="dvo.dname" column="dname"/>
+     <result property="dvo.loc" column="loc"/>
+   </resultMap>
+   
+   <sql id="select">
+   SELECT empno,ename,job,TO_CHAR(hiredate,'YYYY-MM-DD') as dbday,sal,
+   </sql>
+   
+   <!-- 찜하기/좋아요 만들때 사용하는 방법 -->
+   <!-- 방법1 : JOIN -->
+   <select id="empDeptJoinData" resultMap="empMap"> 
+      <include refid="select"/>
+      dname,loc 
+      FROM emp JOIN dept ON emp.deptno=dept.deptno
+   </select>
+   
+   <!-- 방법2 : Subquery -->
+   <select id="empDeptSubqueryData" resultMap="empMap">
+      <include refid="select"/>
+      (SELECT dname FROM dept WHERE deptno=emp.deptno) as dname,
+      (SELECT loc FROM dept WHERE deptno=emp.deptno) as loc,
+      FROM emp
+   </select>
+   
+   <!-- 비교연산자 예시 
+   <select id="empData" resultType="EmpVO">
+      SELECT * FROM emp
+      WHERE sal&lt;3000-->
+      <!-- 여기서는 비교연산자를 사용하지못함 그래서 <모양의 아스키코드를 사용함 -->
+      <!-- &lt; < / &gt; > -->
+   <!-- </select>-->
+   
+   <!-- name값을 가져올때....resultType에 String을 넣는다 -->
+   <select id="empNameData" resultType="String">
+      SELECT ename FROM emp
+   </select>
+   
+   <select id="empFindData" resultType="EmpVO" parameterType="hashmap">
+      SELECT empno,ename,job,TO_CHAR(hiredate,'YYYY-MM-DD')as dbday,sal
+      FROM emp
+      <trim prefix="WHERE ename IN(" suffix=")" suffixOverrides=")">
+            <!-- 맨앞첨부:prefix 맨뒤첨부:suffix,close 맨뒤삭제:suffixOverrides 구분자생성:separator-->
+            <foreach collection="names" item="name" close=")" separator=",">
+               #{name}
+            </foreach>
+      </trim>
+   </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

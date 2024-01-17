@@ -1,0 +1,34 @@
+.table_content{
+		/*라인선 통합*/
+		border-collapse: collapse;
+		
+		border-top: 3px solid #333;
+		
+		border-bottom: 2px solid #333;
+	}
+	
+	.table_content th,.table_content td{
+		margin:0px;
+		padding: 8px;
+		font-size: 9px;
+	}
+	.table_content th{
+		background-color: #999;
+		color: #fff;
+		border-bottom-width:1px gray;
+	}
+	.table_content td{
+		border-bottom-width:1px dotted gray;
+	}
+	.dataTr:hover{
+		background-color: #fc6;
+		cursor: pointer;
+	}
+	
+	.text-center{
+		text-align: center;
+	}
+	
+	.text-left{
+		text-align: left;
+	}
