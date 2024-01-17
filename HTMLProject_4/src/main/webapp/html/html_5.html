@@ -1,0 +1,54 @@
+<!--
+	fieldset
+	=======================================================CSS
+	=> HTML5에서 레이아웃 태그 (시멘틱)
+	   ==================================
+	    header : 검색창, 로그
+	   ==================================
+	    nav : 메뉴 (주)
+	   ==================================
+	    부가적인 정보 (aside)    부가적인 정보
+	    => 로그인/부메뉴         인기상품/공지/뉴스
+	         |                   |
+	         |                   |
+	         |                   |
+	         |                   |
+	         실제 화면 출력 위치 (section)
+	   ==================================
+	    footer : 개인정보 방침, 회사정보, 사이트맵
+	   ==================================
+	   시멘틱 => 테그를 검색이 쉽게
+	   =====HTML은 추상적으로 만들어져 있다
+	        단점 : 테그명이 직관적이지 않는다
+	        <name></name>
+	        <address></address>
+	        <phone></phone>
+	        ==> 이런식으로 의미를 부여해서 만드는게 더 읽기 쉬움..
+	        
+	        
+	        
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<fieldset>
+		<legend>개인정보</legend>
+		<table>
+			<tr>
+				<!--label의 for와 input의 id가 일치해야함-->
+				<td><label for="name">이름</label></td>
+				<td><input type="text" id="name"></td>
+			</tr>
+			<tr>
+				<!--label의 for와 input의 id가 일치해야함-->
+				<td><label for="addr">주소</label></td>
+				<td><input type="text" id="addr" size="30"></td>
+			</tr>
+		</table>
+	</fieldset>
+</body>
+</html>
