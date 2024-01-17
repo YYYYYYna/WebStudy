@@ -1,0 +1,76 @@
+<!--
+	<table> : 목록출력
+	<table>
+	   |
+	  <tr>
+	   |
+	 ======
+	 |    |
+	<th>  <td>
+	제목   실제 출력데이터
+	
+	<tr>===========================
+	 <td></td> <td></td> <td></td>
+	==========================</tr>
+	
+	<tr>===========================
+	 <td></td> <td></td> <td></td>
+	==========================</tr>
+	
+	<tr>===========================
+	 <td></td> <td></td> <td></td>
+	==========================</tr>
+	
+	<tr>안에 <th>,<td>가 반드시 일치
+		
+    => 1. <td>,<th>
+		  <td width='100, 20%' align=''></td>
+	
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	td{
+		text-align: center;
+	}
+</style>
+</head>
+<body>
+	<h1 align="center">테이블 테그</h1>
+	<table border="1" width="500" align="center">
+	  <thead>
+		<tr>
+			<th width="10%">학번</th>
+			<th width="45%">이름</th>
+			<th width="15%">국어</th>
+			<th width="15%">영어</th>
+			<th width="15%">수학</th>
+		</tr>
+	  </thead>
+	  <tbody>
+		<tr>
+			<td>1</td>
+			<td>홍길동</td>
+			<td>90</td>
+			<td>90</td>
+			<td>90</td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td>심청이</td>
+			<td>80</td>
+			<td>80</td>
+			<td>80</td>
+		</tr>
+	  </tbody>
+	  <tfoot>
+		 <tr>
+			<td colspan="5" align="right">총 인원 2 명</td>  
+		 </tr>
+	  </tfoot>
+	</table>
+</body>
+</html>
